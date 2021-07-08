@@ -1,0 +1,164 @@
+﻿@model ZoomAttendanceApp.Models.ViewModels.SubjectViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row" id="vue-app">
+
+    <div class="col-md-4">
+
+        <h1 class="lead">Add New Subjects</h1>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" v-model="name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        
+
+
+        <div class="form-group">
+            <div class="form-group">
+                <label>Select Branch</label>
+                @*@Html.DropDownListFor(m => m.BranchId, Model.BranchList,
+        "Select Branch", new { @class = "form-control" , @v-on:change = "SetSemester($event)"})*@
+
+            <select asp-for="BranchId" class="form-control" v-on:change="SetBranchId($event)" >
+
+                <option>Please select Branch</option>
+
+                <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+                
+
+
+            </select>
+
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Semester"></label>
+            <select asp-for="Semester" class="form-control"     v-on:change="SetSemester($event)"  asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+
+                <option>Please select Semester</option>
+
+
+            </select>
+
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+
+
+
+
+
+
+        <button type="button"   v-on:click="AddSubject"  class="btn btn-secondary">Add Subject</button>
+
+
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-6">
+
+        <h2 class="lead">Subjects</h2>
+        <br />
+        <div v-for="item in subjects">
+            <ul class="list-group">
+                <li class="list-group-item">
+
+
+                    <div class="float-left">{{item.name}}</div>
+                    <div class="float-right"><button type="button"  v-on:click="showEditSubjectIdFun(item.id)" class="btn btn-secondary btn-sm float-right">Edit Subject</button></div>
+                    <br>
+                    <div v-if="showEditSubjectId==item.id">
+                        <br>
+                       
+                        
+                        
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" v-model="EditSubjectName" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Select Branch</label>
+
+                                <select asp-for="BranchId" class="form-control" v-on:change="SetEditBranchId($event)">
+
+                                    <option>Please select Branch</option>
+
+                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                </select>
+
+                                <span asp-validation-for="BranchId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="Semester"></label>
+                            <select asp-for="Semester" class="form-control" v-on:change="SeteditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+
+                                <option>Please select Semester</option>
+
+
+                            </select>
+
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+
+
+
+
+
+
+                        <button type="button"    v-on:click="saveEditSubject" class="btn btn-secondary btn-sm">Edit Subject</button>
+
+
+
+
+                    </div>
+
+
+                    
+
+
+                </li>
+
+            </ul>
+            <br />
+
+        </div>
+       
+
+
+    </div>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/Subject.js"></script>
+
+}

@@ -1,0 +1,976 @@
+﻿
+@{
+    ViewData["Title"] = "SearchStudents";
+}
+
+<h1>SearchStudents</h1>
+
+<div id="vue-app">
+
+    <form>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" v-model="searchStudentName" class="form-control" placeholder="Search Student By Name">
+            </div>
+            <div class="col">
+                <input type="text" v-model="SearchStudentEnrollementId" class="form-control" placeholder="Search student By Enrollement Id">
+            </div>
+            <div class="col">
+                <input type="text" v-model="SearchStudentBranch" class="form-control" placeholder="Search Student By  Branch">
+            </div>
+
+
+
+        </div>
+        <br />
+        <br />
+        <div class="form-row">
+            <div class="col">
+                <input type="text" v-model="searchStudentPhoneNumber" class="form-control" placeholder="Search Student By Phone">
+
+            </div>
+            <div class="col">
+                <input type="text" v-model="searchStudentEmail" class="form-control" placeholder="Search Student By Email">
+            </div>
+
+
+            <div class="col">
+                <input type="text" v-model="SearchStudentSemester" class="form-control" placeholder="Search Student By Semester">
+            </div>
+        </div>
+    </form>
+
+    <br />
+    <br />
+
+
+    <div class="d-flex justify-content-center">
+
+        <button type="button" class="btn btn-secondary ">Search for Combination of fields Student</button>
+    </div>
+
+    <br />
+    <br />
+
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Enrollement Id</li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.enrollementId==SearchStudentEnrollementId">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Enrollement Id</li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.enrollementId==SearchStudentEnrollementId">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Enrollement Id</li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.name==searchStudentName">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Phone Number</li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.phoneNumber==searchStudentPhoneNumber">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Enrollement Id</li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.email==searchStudentEmail">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Branch </li>
+        </ol>
+    </nav>
+    <div>
+        <div v-for="items in  students">
+            <div v-if="items.branchName==SearchStudentBranch">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div>
+
+                                        <br /><br />
+
+                                        <div class="form-group">
+                                            <label>Enrollement Number</label>
+
+                                            <input v-model="EditEnrollementNumber" class="form-control" />
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input v-model="EditName" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input v-model="EditPhoneNumber" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Semester</label>
+                                            <select class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+ <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Students By Semester</li>
+        </ol>
+    </nav>
+    <div >
+        <div v-for="items in  students">
+            <div v-if="items.semesterName==SearchStudentSemester" >
+
+                <div class="container">
+                    <div class="row">
+                        <div class="card col-sm-6" style="width: 18rem;">
+                            <div class="card-header">
+                                Enrollement Id- {{items.enrollementId}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name:{{items.name}}</li>
+                                <li class="list-group-item">Phone Number:{{items.phoneNumber}}</li>
+                                <li class="list-group-item">Email:{{items.email}}</li>
+
+                                <li class="list-group-item">EId:{{items.enrollementId}}</li>
+                                <li class="list-group-item">Branch Name:{{items.branchName}}</li>
+
+
+                                <li class="list-group-item">Semester:{{items.semesterName}}</li>
+
+
+                            </ul>
+                            <button type="button" v-on:click="showEditStudentIdFun(items.id)" class="btn btn-secondary btn-sm">Edit Student</button>
+
+                        </div>
+
+                        <div  v-if="showEditStudentId==items.id" class="col-sm-6">
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div >
+
+                                        <br /><br />
+
+                                              <div class="form-group">
+                                                  <label>Enrollement Number</label>
+
+                                                  <input v-model="EditEnrollementNumber" class="form-control" />
+                                              </div>
+
+
+
+                                        <div class="form-group">
+                                            <label >Name</label>
+                                            <input v-model="EditName"  class="form-control" />
+                                            <span  class="text-danger"></span>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label >Email</label>
+                                            <input v-model="EditEmail" class="form-control" />
+                                            <span  class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label >Phone Number</label>
+                                            <input v-model="EditPhoneNumber"  class="form-control" />
+                                            <span  class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label >Semester</label>
+                                            <select  class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Select Branch</label>
+
+                                                <select  class="form-control" v-on:change="setEditBranchId($event)">
+
+                                                    <option>Please select Branch</option>
+
+                                                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <br />
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+@section Scripts{
+
+
+
+    <script src="~/js/SearchStudent.js"></script>
+
+}

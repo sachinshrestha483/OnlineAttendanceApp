@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+    <div id="vue-app">
+        <h1>Index</h1>
+        <a  asp-action="showLecture" class="btn btn-secondary btn-lg btn-block"> Show All Lectures</a>
+        <br />
+        <button type="button" class="btn btn-secondary btn-lg btn-block" v-on:click="showAddLecture=!showAddLecture">Add Lecture</button>
+        <br />
+        <br />
+        <div v-if="showAddLecture">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-6">Add Lecture</h1>
+                    <hr class="my-4">
+
+
+
+                    <div class="form-row">
+                        <div class="col">
+                            <input v-model="lectureTopic" type="text" class="form-control" placeholder="Lecture Topic">
+                        </div>
+                        <div class="col">
+                            <input v-model="lectureDate" type="date" class="form-control" placeholder="Lecture Date ">
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="form-row">
+                        <div class="col-md-2">
+
+
+                            <select class="form-control" v-on:change="setSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+                            </select>
+                        </div>
+                        <div class="col">
+
+                            <select class="form-control" v-on:change="setBranchId($event)">
+
+                                <option>Please select Branch</option>
+
+
+                                <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                            </select>
+
+                        </div>
+                        <div class="col">
+                            <select class="form-control" v-on:change="setSubjectId($event)">
+
+                                <option>Please select Subject</option>
+
+                                <option v-for="item in subjects" v-if="item.branchId==lectureBranch" v-bind:value=item.id>{{ item.name }}</option>
+
+
+
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <br />
+                    <button type="button" v-on:click="addLecture" class="btn btn-secondary btn-lg btn-block">Add Lecture With Attendance </button>
+
+                    <br />
+
+
+                    <hr class="my-4">
+
+                    @* <h3>{{presentStudentsNames}}</h3>*@
+                    <p class="lead"> Number of Student Present :{{presentStudentsNames.length}}</p>
+
+                    <div class="card" style="width: 18rem;">
+                        <ul class="list-group list-group-flush">
+
+                            <div v-for="item in students">
+
+                                <div v-if="item.semester==lectureSemester && item.branchId==lectureBranch">
+
+
+                                    <input type="checkbox" v-bind:id="item.id" v-bind:value="item.id" v-model="presentStudentsNames">
+                                    <label v-bind:for="item.id">{{item.name}}</label>
+
+                                    @*<div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox"      v-bind:id="item.id" value="item.id"  v-model="presentStudentsNames" aria-label="Checkbox for following text input">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary">&nbsp;&nbsp;{{item.name}}&nbsp;&nbsp;</button>
+                                        <button type="button" class="btn btn-secondary btn-lg btn-block">{{item.name}}</button>
+
+
+
+                                         <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                    </div>*@
+
+
+
+
+
+
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+                        </ul>
+
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+@section Scripts{
+
+
+    <style type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous" >
+
+        <style >
+        .custom-control-label::before,
+        .custom-control-label::after {
+            top: 2.8rem;
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+    </style>
+    </style>
+
+
+
+
+    <script src="~/js/Lecture.js"></script>
+
+}

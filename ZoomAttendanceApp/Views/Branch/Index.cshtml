@@ -1,0 +1,65 @@
+﻿@model ZoomAttendanceApp.Models.ViewModels.AddBranchviewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row" id="vue-app">
+
+    <div class="col-md-4">
+
+        <h1 class="lead">Add New Branches</h1>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" v-model="branchName" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+
+        <button type="button" v-on:click="processForm" class="btn btn-secondary">Add Branch</button>
+
+
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-6">
+
+        <h2>Branches</h2>
+        <div v-for="item in resultObj">
+            <ul class="list-group">
+
+
+
+
+                <li class="list-group-item">
+                    <div class="float-left"> {{item.branchName}}</div>
+                    <div class="float-right"><button type="button" v-on:click="showEditFun(item.id)" class="btn btn-secondary btn-sm">Edit Branch Name</button></div><br>
+                    <div v-if="showEditId==item.id">
+                        <br />
+                        <input asp-for="Name" v-model="editBranchName" class="form-control" />
+                        <br />
+                        <button type="button" v-on:click="EditBranchName" class="btn btn-secondary btn-sm">Edit it</button>
+                    </div>
+                    <br />
+
+
+
+                </li>
+
+
+
+            </ul>
+            <br />
+        </div>
+    </div>
+
+    </div>
+
+@section Scripts{
+    <script src="~/js/branch.js"></script>
+   
+
+}

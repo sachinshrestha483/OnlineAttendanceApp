@@ -1,0 +1,247 @@
+﻿@model ZoomAttendanceApp.Models.ViewModels.AddStudentViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div class="row" id="vue-app">
+
+    <div class="col-md-4">
+
+        <h1>Add Student</h1>
+
+
+        <div class="form-group">
+            <label asp-for="EnrollementNumber"></label>
+            <input v-model="EnrollementNumber" asp-for="EnrollementNumber" class="form-control" />
+            <span asp-validation-for="EnrollementNumber" class="text-danger"></span>
+        </div>
+
+
+
+        <div class="form-group">
+            <label asp-for="name"></label>
+            <input v-model="name" asp-for="name" class="form-control" />
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input v-model="Email" asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="phoneNumber"></label>
+            <input v-model="phoneNumber" asp-for="phoneNumber" class="form-control" />
+            <span asp-validation-for="phoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Semester"></label>
+            <select asp-for="Semester" class="form-control" v-on:change="setSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+
+                <option>Please select Semester</option>
+
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="form-group">
+                <label>Select Branch</label>
+
+                <select asp-for="Branch" class="form-control" v-on:change="setBranchId($event)">
+
+                    <option>Please select Branch</option>
+
+                    <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                </select>
+
+                <span asp-validation-for="Branch" class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <br />
+        <br />
+        <button type="button" v-on:click="saveStudent" class="btn btn-secondary float-left">Add Student</button>
+        
+        <a asp-controller="student"  asp-action="SearchStudents"   class="btn btn-secondary float-right">Search Students</a>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <h2>Students</h2>
+
+
+        <div v-for="item in students">
+
+
+            <ul class="list-group">
+
+
+
+
+                <li class="list-group-item">
+                    @*Name-{{item.name}}&nbsp;&nbsp; Eid-{{item.enrollementId}}&nbsp;&nbsp;Branch-{{item.branchName}}&nbsp;&nbsp;Semester-{{item.semesterName}}*@
+
+                    <div class="float-left">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="option1" checked>Name: {{item.name}}
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option2"> Eid: {{item.enrollementId}}
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option3">BranchName: {{item.branchName}}
+                            </label>
+
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option3">Semester: {{item.semesterName}}
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="float-right"><button type="button" v-on:click="SetshowEditStudentId(item.id)" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+                    @*    <h1>It Will Come Here</h1>*@
+
+
+
+
+
+
+                </li>
+
+
+
+            </ul>
+
+            <div v-if="showEditStudentId==item.id">
+
+                <br /><br />
+
+                <div class="form-group">
+                    <label asp-for="EnrollementNumber"></label>
+                    <input v-model="EditEnrollementNumber" asp-for="EnrollementNumber" class="form-control" />
+                    <span asp-validation-for="EnrollementNumber" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label asp-for="name"></label>
+                    <input v-model="EditName" asp-for="name" class="form-control" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+
+
+
+
+
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input v-model="EditEmail" asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="phoneNumber"></label>
+                    <input v-model="EditPhoneNumber" asp-for="phoneNumber" class="form-control" />
+                    <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Semester"></label>
+                    <select asp-for="Semester" class="form-control" v-on:change="setEditSemester($event)" asp-items="Html.GetEnumSelectList<ZoomAttendanceApp.Models.Subject.Semesters>()">
+
+
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label>Select Branch</label>
+
+                        <select asp-for="Branch" class="form-control" v-on:change="setEditBranchId($event)">
+
+                            <option>Please select Branch</option>
+
+                            <option v-for="item in branches" v-bind:value=item.id>{{ item.branchName }}</option>
+
+
+
+
+                        </select>
+
+                        <span asp-validation-for="Branch" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div ><button type="button" v-on:click="saveEditStudent" class="btn btn-secondary btn-sm">Edit Student</button></div><br>
+
+                </div>
+
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+       
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+
+   
+
+    <script src="~/js/Student.js"></script>
+
+}

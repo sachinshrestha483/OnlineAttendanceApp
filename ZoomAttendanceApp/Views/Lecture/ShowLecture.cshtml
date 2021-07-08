@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "ShowLecture";
+}
+
+<div id="vue-app">
+
+    <h1>ShowLecture</h1>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div v-for="item in lectures">
+        <div class="jumbotron jumbotron-fluid">
+
+            <div class="container">
+                <h3>Lecture Title-{{item.title}}</h3>
+                <hr class="my-4">
+
+                <p>By-{{item.lecturarName}}</p>
+                <p>Date-{{item.date}}</p>
+
+                <p>Subject-{{item.subject}}</p>
+                <p>Semester-{{item.semester}}</p>
+                <p>Branch Name-{{item.branchName}}</p>
+
+
+
+                <hr class="my-4">
+
+
+                <div class="card" style="width: 18rem;">
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Student Present-{{item.studentPresent.length}}</li>
+                    </ul>
+                </div>
+                <br />
+                <div class="card" style="width: 18rem;">
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Student Total-{{item.studentsToBePresent.length}}</li>
+                    </ul>
+                </div>
+
+                <br />
+                <div class="card" style="width: 18rem;">
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Student Absent-{{item.studentsToBePresent.length-item.studentPresent.length}}</li>
+                    </ul>
+                </div>
+
+
+
+                <br />
+                <p class="lead">Present Student</p>
+                <div class="card" style="width: 18rem;">
+
+                    <ul class="list-group list-group-flush">
+                        <li v-for="item1 in item.studentPresent" class="list-group-item">Student Name-{{item1.name}}</li>
+                    </ul>
+                </div>
+
+                <p class="lead">Absent Student</p>
+
+                <div class="card" style="width: 18rem;">
+
+                    <ul class="list-group list-group-flush">
+                        <li v-for="item1 in item.studentAbsent" class="list-group-item">Student Name-{{item1.name}}</li>
+                    </ul>
+                </div>
+
+                <br />
+
+
+                <button type="button" v-on:click="showEditLectureIdFun(item.lectureId)" class="btn btn-secondary">Edit Lecture Attendance</button>
+
+                <br />
+                <div v-if="showEditLectureId==item.lectureId">
+                    <br />
+                    <p>Selected Student-{{presentStudentsNames.length}} </p>
+                    <div class="card" style="width: 18rem;">
+                        <div v-for="item2 in item.studentAbsent">
+
+                            <input type="checkbox" v-bind:id="item2.id" v-bind:value="item2.id" v-model="presentStudentsNames">
+                            <label v-bind:for="item2.id">{{item2.name}}</label>
+
+
+                        </div>
+
+
+                    </div>
+                    <br />
+                    <button type="button"  v-on:click="EditLecture" class="btn btn-secondary btn-sm">Edit it</button>
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                @*<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>*@
+            </div>
+        </div>
+        <br />
+        <br />
+
+    </div>
+
+</div>
+
+
+@section Scripts{
+
+    <style type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous" >
+
+        <style >
+        .custom-control-label::before,
+        .custom-control-label::after {
+            top: 2.8rem;
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+    </style>
+    </style>
+
+    <script src="~/js/showLecture.js"></script>
+
+}
